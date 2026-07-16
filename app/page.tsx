@@ -175,12 +175,15 @@ export default function Home() {
 
             <div className="group overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-lg shadow-slate-200/50 transition-all hover:-translate-y-1 hover:shadow-xl">
               <div className="relative aspect-square w-full bg-slate-100">
-                <Image
+                <Link href='./participer'>
+                  <Image
                   src="/img/IMG-20260714-WA0060.jpg"
                   alt="Réunion à Baja Beach"
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
+                </Link>
+                
               </div>
               <div className="p-6">
                 <span className="text-xs font-black text-blue-600 uppercase tracking-wider">Préparatifs</span>
