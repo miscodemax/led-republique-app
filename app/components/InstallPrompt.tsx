@@ -8,7 +8,7 @@ import { Download, X, Share } from "lucide-react";
 // - iOS Safari : ce navigateur ne propose pas d'installation automatique,
 //   on affiche donc une instruction claire ("Partager > Sur l'écran d'accueil")
 
-export default function InstallPWAPrompt() {
+export default function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [visible, setVisible] = useState(false);
   const [platform, setPlatform] = useState<"android" | "ios" | null>(null);

@@ -6,7 +6,7 @@ import { Menu, X } from "lucide-react";
 
 const LIENS = [
   { href: "/", label: "Accueil" },
-  { href: "/datas", label: "Vision" },
+  { href: "/#activites", label: "Vision" },
   { href: "/#membres", label: "Piliers" },
 ];
 
@@ -16,13 +16,13 @@ export default function Navbar() {
   const fermer = () => setOuvert(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200/60 bg-white/80 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" onClick={fermer} className="flex items-center gap-3 group">
-          <div className="h-10 w-10 rounded-xl bg-blue-600 flex items-center justify-center font-black text-white shadow-md shadow-blue-500/20 transition-transform group-hover:scale-105">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-sm">
+      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6 gap-2">
+        <Link href="/" onClick={fermer} className="flex items-center gap-2 sm:gap-3 group shrink-0">
+          <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-blue-600 flex items-center justify-center font-black text-white shadow-md shadow-blue-500/20 transition-transform group-hover:scale-105">
             LR
           </div>
-          <span className="text-xl font-black tracking-tight text-slate-900">
+          <span className="text-base sm:text-xl font-black tracking-tight text-slate-900 whitespace-nowrap">
             LED <span className="text-blue-600">République</span>
           </span>
         </Link>
@@ -44,15 +44,23 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Bouton burger mobile */}
-        <button
-          onClick={() => setOuvert((v) => !v)}
-          aria-label={ouvert ? "Fermer le menu" : "Ouvrir le menu"}
-          aria-expanded={ouvert}
-          className="md:hidden flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-slate-700 active:scale-95 transition-transform"
-        >
-          {ouvert ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        {/* Mobile : CTA compact toujours visible + burger */}
+        <div className="flex md:hidden items-center gap-2 shrink-0">
+          <Link
+            href="/participer"
+            className="inline-flex h-10 items-center justify-center rounded-xl bg-blue-600 px-3.5 text-xs font-bold text-white shadow-md shadow-blue-600/20 active:scale-95 transition-all whitespace-nowrap"
+          >
+            26 Juillet
+          </Link>
+          <button
+            onClick={() => setOuvert((v) => !v)}
+            aria-label={ouvert ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={ouvert}
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-300 bg-slate-50 text-slate-800 active:scale-95 transition-transform"
+          >
+            {ouvert ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Panneau mobile plein écran */}
