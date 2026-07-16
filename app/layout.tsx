@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import InstallPrompt from "./components/InstallPrompt";
-import RegisterSW from "./components/RegisterSW";
+import RegisterSW from "./components/Registersw";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import SyncOfflineData from "./components/SyncOfflineData";
