@@ -79,7 +79,7 @@ export default function Participer() {
 
   // Redirige vers l'accueil avec un petit message de remerciement en wolof
   const allerVersAccueilAvecMerci = (prenomAffiche: string) => {
-    sessionStorage.setItem("led_merci_nom", prenomAffiche || "cher(e) camarade");
+    sessionStorage.setItem("led_merci_nom", prenomAffiche.toUpperCase() || "cher(e) camarade");
     router.push("/");
   };
 

@@ -38,9 +38,11 @@ export default function DataPage() {
     const charger = async () => {
       const { data, error } = await supabase.from("engagements").select("quartier, age");
       if (error) {
-        setErreur("Impossible de charger les données pour le moment.");
+        console.error("Erreur Supabase (page /data) :", error);
+        setErreur(`Erreur : ${error.message}`);
         return;
       }
+      console.log("Lignes reçues depuis Supabase :", data?.length ?? 0);
       setDonnees(data as Engagement[]);
     };
     charger();
