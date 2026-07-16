@@ -25,6 +25,7 @@ interface OfflineInscription {
   nom_complet: string;
   telephone: string;
   quartier: string;
+  age: number;
 }
 
 export default function Participer() {
@@ -32,6 +33,7 @@ export default function Participer() {
 
   const [nom, setNom] = useState("");
   const [tel, setTel] = useState("");
+  const [age, setAge] = useState("");
   const [quartierSelectionne, setQuartierSelectionne] = useState("");
 
   const [isOffline, setIsOffline] = useState(false);
@@ -90,12 +92,19 @@ export default function Participer() {
       return;
     }
 
+    const ageNombre = parseInt(age, 10);
+    if (!age || isNaN(ageNombre) || ageNombre < 15 || ageNombre > 100) {
+      setErreur("Entre un âge valide.");
+      return;
+    }
+
     setLoading(true);
 
     const data: OfflineInscription = {
       nom_complet: nom.trim(),
       telephone: tel.trim(),
       quartier: quartierSelectionne,
+      age: ageNombre,
     };
     const prenom = data.nom_complet.split(" ")[0] || "cher(e) camarade";
 
@@ -170,7 +179,7 @@ export default function Participer() {
                 placeholder="Ex: Amadou Diop"
                 value={nom}
                 onChange={(e) => setNom(e.target.value)}
-                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-base"
+                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-blue-600"
               />
             </div>
 
@@ -184,7 +193,24 @@ export default function Participer() {
                 placeholder="Ex: 77 123 45 67"
                 value={tel}
                 onChange={(e) => setTel(e.target.value)}
-                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-base"
+                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-blue-600"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">
+                Âge
+              </label>
+              <input
+                type="number"
+                required
+                inputMode="numeric"
+                placeholder="Ex: 27"
+                min={15}
+                max={100}
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-blue-600"
               />
             </div>
 
