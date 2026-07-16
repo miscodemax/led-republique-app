@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import InstallPrompt from "./components/InstallPrompt";
-import RegisterSW from "./components/Registersw";
+import RegisterSW from "./components/RegisterSW";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import SyncOfflineData from "./components/SyncOfflineData";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Activation du mode hors-ligne (mise en cache de l'app) */}
         <RegisterSW />
+
+        {/* Synchronisation des inscriptions faites hors-ligne, dès que possible */}
+        <SyncOfflineData />
       </body>
     </html>
   );

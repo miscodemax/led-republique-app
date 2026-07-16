@@ -42,44 +42,20 @@ export default function Participer() {
 
   useEffect(() => {
     setIsOffline(!navigator.onLine);
-
-    const checkOnline = () => {
-      setIsOffline(false);
-      synchroDonneesLocales();
-    };
+    const checkOnline = () => setIsOffline(false);
     const checkOffline = () => setIsOffline(true);
 
     window.addEventListener("online", checkOnline);
     window.addEventListener("offline", checkOffline);
-    synchroDonneesLocales();
-
     return () => {
       window.removeEventListener("online", checkOnline);
       window.removeEventListener("offline", checkOffline);
     };
   }, []);
 
-  const synchroDonneesLocales = async () => {
-    const backup = localStorage.getItem("pending_engagements");
-    if (!backup) return;
-
-    const inscriptions: OfflineInscription[] = JSON.parse(backup);
-    if (inscriptions.length === 0) return;
-
-    try {
-      const { error } = await supabase.from("engagements").insert(inscriptions);
-      if (!error) {
-        localStorage.removeItem("pending_engagements");
-        console.log("Synchronisation réussie avec Supabase !");
-      }
-    } catch (err) {
-      console.warn("Échec de la reconnexion automatique :", err);
-    }
-  };
-
   // Redirige vers l'accueil avec un petit message de remerciement en wolof
   const allerVersAccueilAvecMerci = (prenomAffiche: string) => {
-    sessionStorage.setItem("led_merci_nom", prenomAffiche.toUpperCase() || "cher(e) camarade");
+    sessionStorage.setItem("led_merci_nom", prenomAffiche || "cher(e) camarade");
     router.push("/");
   };
 
@@ -179,7 +155,7 @@ export default function Participer() {
                 placeholder="Ex: Amadou Diop"
                 value={nom}
                 onChange={(e) => setNom(e.target.value)}
-                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-blue-600"
+                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-base"
               />
             </div>
 
@@ -193,7 +169,7 @@ export default function Participer() {
                 placeholder="Ex: 77 123 45 67"
                 value={tel}
                 onChange={(e) => setTel(e.target.value)}
-                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-blue-600"
+                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-base"
               />
             </div>
 
@@ -210,7 +186,7 @@ export default function Participer() {
                 max={100}
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
-                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-blue-600"
+                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-base"
               />
             </div>
 
