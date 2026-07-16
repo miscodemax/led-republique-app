@@ -65,7 +65,7 @@ export default function Navbar() {
 
       {/* Panneau mobile plein écran */}
       {ouvert && (
-        <div className="md:hidden fixed inset-x-0 top-16 bottom-0 z-40 bg-white flex flex-col">
+        <div className="md:hidden fixed inset-x-0 top-16 bottom-0 z-40 bg-blue-900 opacity-50 flex flex-col">
           <nav className="flex flex-col divide-y divide-slate-100 px-4">
             {LIENS.map((l) => (
               <Link
