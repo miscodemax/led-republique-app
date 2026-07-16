@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import InstallPrompt from "./components/InstallPrompt";
+import RegisterSW from "./components/Registersw";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -76,6 +77,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Invite d'installation PWA */}
         <InstallPrompt />
+
+        {/* Activation du mode hors-ligne (mise en cache de l'app) */}
+        <RegisterSW />
       </body>
     </html>
   );

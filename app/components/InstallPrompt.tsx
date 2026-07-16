@@ -1,56 +1,90 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Download, X, Share } from "lucide-react";
 
-export default function InstallPrompt() {
-  const [isInstallable, setIsInstallable] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// Bannière d'installation PWA — se déclenche dès le chargement du site.
+// - Android / Chrome / Edge : bouton natif "Installer" via beforeinstallprompt
+// - iOS Safari : ce navigateur ne propose pas d'installation automatique,
+//   on affiche donc une instruction claire ("Partager > Sur l'écran d'accueil")
+
+export default function InstallPWAPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [visible, setVisible] = useState(false);
+  const [platform, setPlatform] = useState<"android" | "ios" | null>(null);
 
   useEffect(() => {
-    // Écoute l'événement natif du navigateur qui permet l'installation
-    const handler = (e: Event) => {
-      e.preventDefault(); // Empêche l'affichage natif
-      setDeferredPrompt(e); // Sauvegarde l'événement pour le déclencher plus tard
-      setIsInstallable(true); // Affiche notre bouton personnalisé
-    };
+    // Ne pas réafficher si déjà installé ou déjà refusé récemment
+    const alreadyDismissed = localStorage.getItem("led_pwa_dismissed");
+    const isStandalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (window.navigator as any).standalone === true;
 
+    if (isStandalone) return;
+
+    const ua = window.navigator.userAgent;
+    const isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+    if (isIOS) {
+      setPlatform("ios");
+      if (!alreadyDismissed) setVisible(true);
+    }
+
+    const handler = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setPlatform("android");
+      if (!alreadyDismissed) setVisible(true);
+    };
     window.addEventListener("beforeinstallprompt", handler);
-
-    return () => {
-      window.removeEventListener("beforeinstallprompt", handler);
-    };
+    return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
-  const handleInstallClick = async () => {
+  const installer = async () => {
     if (!deferredPrompt) return;
-
-    // Affiche la vraie demande d'installation du téléphone
     deferredPrompt.prompt();
-    
-    // Attend le choix de l'utilisateur
-    const { outcome } = await deferredPrompt.userChoice;
-    
-    if (outcome === "accepted") {
-      setIsInstallable(false);
-    }
-    
+    await deferredPrompt.userChoice;
     setDeferredPrompt(null);
+    setVisible(false);
   };
 
-  if (!isInstallable) return null;
+  const fermer = () => {
+    setVisible(false);
+    localStorage.setItem("led_pwa_dismissed", "1");
+  };
+
+  if (!visible) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom-5">
-      <button
-        onClick={handleInstallClick}
-        className="flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-bold text-white shadow-xl shadow-slate-900/20 hover:bg-slate-800 transition-all"
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-        </svg>
-        Installer l'app
-      </button>
+    <div className="fixed bottom-0 inset-x-0 z-[90] p-3 sm:p-4">
+      <div className="mx-auto max-w-md rounded-2xl bg-slate-900 text-white shadow-2xl p-4 flex items-start gap-3">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-600">
+          <Download className="h-5 w-5" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-bold">Installe l'appli LED République</p>
+          {platform === "ios" ? (
+            <p className="text-xs text-slate-300 mt-1 leading-relaxed flex items-center gap-1 flex-wrap">
+              Appuie sur <Share className="h-3.5 w-3.5 inline" /> puis « Sur l'écran d'accueil » pour l'ajouter et l'utiliser même sans connexion.
+            </p>
+          ) : (
+            <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+              Accède au site en un tap, même sans connexion internet.
+            </p>
+          )}
+          {platform === "android" && (
+            <button
+              onClick={installer}
+              className="mt-3 h-9 px-4 rounded-xl bg-blue-600 text-xs font-bold active:scale-95 transition-all"
+            >
+              Installer maintenant
+            </button>
+          )}
+        </div>
+        <button onClick={fermer} aria-label="Fermer" className="text-slate-400 hover:text-white shrink-0">
+          <X className="h-5 w-5" />
+        </button>
+      </div>
     </div>
   );
 }

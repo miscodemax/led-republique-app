@@ -2,10 +2,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, Check, AlertCircle, RefreshCw } from "lucide-react";
+import { ChevronLeft, AlertCircle } from "lucide-react";
 
 const QUARTIERS = [
   "Tonghor",
@@ -17,7 +18,7 @@ const QUARTIERS = [
   "Nord-Foire",
   "Cité Biagui",
   "Djily Mbaye",
-  "Cité Avion"
+  "Cité Avion",
 ];
 
 interface OfflineInscription {
@@ -27,15 +28,16 @@ interface OfflineInscription {
 }
 
 export default function Participer() {
+  const router = useRouter();
+
   const [nom, setNom] = useState("");
   const [tel, setTel] = useState("");
   const [quartierSelectionne, setQuartierSelectionne] = useState("");
-  
+
   const [isOffline, setIsOffline] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState<{ type: "success" | "error" | "offline"; message: string } | null>(null);
+  const [erreur, setErreur] = useState<string | null>(null);
 
-  // Écouter l'état du réseau internet
   useEffect(() => {
     setIsOffline(!navigator.onLine);
 
@@ -47,8 +49,6 @@ export default function Participer() {
 
     window.addEventListener("online", checkOnline);
     window.addEventListener("offline", checkOffline);
-
-    // Première synchro de contrôle au chargement de l'écran
     synchroDonneesLocales();
 
     return () => {
@@ -57,7 +57,6 @@ export default function Participer() {
     };
   }, []);
 
-  // Synchronisation automatique des fiches sauvées hors-ligne
   const synchroDonneesLocales = async () => {
     const backup = localStorage.getItem("pending_engagements");
     if (!backup) return;
@@ -76,73 +75,64 @@ export default function Participer() {
     }
   };
 
+  // Redirige vers l'accueil avec un petit message de remerciement en wolof
+  const allerVersAccueilAvecMerci = (prenomAffiche: string) => {
+    sessionStorage.setItem("led_merci_nom", prenomAffiche || "cher(e) camarade");
+    router.push("/");
+  };
+
   const validerFormulaire = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErreur(null);
+
     if (!quartierSelectionne) {
-      setStatus({ type: "error", message: "Sélectionne ton quartier pour continuer." });
+      setErreur("Sélectionne ton quartier pour continuer.");
       return;
     }
 
     setLoading(true);
-    setStatus(null);
 
     const data: OfflineInscription = {
       nom_complet: nom.trim(),
       telephone: tel.trim(),
       quartier: quartierSelectionne,
     };
+    const prenom = data.nom_complet.split(" ")[0] || "cher(e) camarade";
 
-    // Gestion du scénario HORS-LIGNE
+    // Scénario HORS-LIGNE : on sauvegarde en local puis on redirige quand même
     if (!navigator.onLine) {
       const existants = localStorage.getItem("pending_engagements");
       const liste = existants ? JSON.parse(existants) : [];
       liste.push(data);
       localStorage.setItem("pending_engagements", JSON.stringify(liste));
 
-      setStatus({
-        type: "offline",
-        message: "💾 Enregistré localement ! Ton inscription s'enverra dès que ta connexion internet reviendra.",
-      });
-      reinitialiserChamps();
       setLoading(false);
+      allerVersAccueilAvecMerci(prenom);
       return;
     }
 
-    // Gestion du scénario EN LIGNE classique
+    // Scénario EN LIGNE
     try {
       const { error } = await supabase.from("engagements").insert([data]);
       if (error) throw error;
-
-      setStatus({
-        type: "success",
-        message: "🇸🇳 Jërëjëf ! Ton engagement a été enregistré avec succès.",
-      });
-      reinitialiserChamps();
-    } catch (err: any) {
-      setStatus({
-        type: "error",
-        message: err.code === "23505" 
-          ? "Ce numéro de téléphone est déjà enregistré !" 
-          : "Un problème est survenu. Réessaye dans un instant.",
-      });
-    } finally {
       setLoading(false);
+      allerVersAccueilAvecMerci(prenom);
+    } catch (err: any) {
+      setLoading(false);
+      setErreur(
+        err.code === "23505"
+          ? "Ce numéro de téléphone est déjà enregistré !"
+          : "Un problème est survenu. Réessaye dans un instant."
+      );
     }
-  };
-
-  const reinitialiserChamps = () => {
-    setNom("");
-    setTel("");
-    setQuartierSelectionne("");
   };
 
   return (
     <main className="min-h-screen bg-slate-50 py-10 px-4">
-      {/* Alert réseau dynamique */}
       {isOffline && (
-        <div className="fixed top-0 left-0 right-0 z-50 bg-amber-500 text-white text-center py-2 text-xs font-bold animate-pulse flex items-center justify-center gap-1.5">
+        <div className="fixed top-0 left-0 right-0 z-50 bg-amber-500 text-white text-center py-2 text-xs font-bold flex items-center justify-center gap-1.5">
           <AlertCircle className="h-4 w-4" />
-          Mode hors-ligne • Les données s&apos;enregistrent sur votre téléphone
+          Mode hors-ligne • Ton inscription sera enregistrée sur ton téléphone
         </div>
       )}
 
@@ -152,14 +142,8 @@ export default function Participer() {
           Retour à l&apos;accueil
         </Link>
 
-        {/* Bloc d'affiche pour motiver l&apos;engagement */}
         <div className="relative aspect-[16/9] w-full overflow-hidden rounded-t-3xl border border-b-0 border-slate-200 bg-slate-100 shadow-sm">
-          <Image 
-            src="/img/IMG-20260715-WA0050.jpg" 
-            alt="Événement du 26 Juillet" 
-            fill
-            className="object-cover"
-          />
+          <Image src="/img/IMG-20260715-WA0050.jpg" alt="Événement du 26 Juillet" fill className="object-cover" />
         </div>
 
         <div className="bg-white rounded-b-3xl border border-t-0 border-slate-200 shadow-md p-6 sm:p-8">
@@ -168,23 +152,17 @@ export default function Participer() {
             <p className="text-slate-500 text-sm mt-1">Rejoins LED République et participe au grand lancement de Yoff.</p>
           </div>
 
-          {status && (
-            <div className={`p-4 rounded-2xl mb-6 text-sm font-bold flex items-start gap-2.5 ${
-              status.type === "success" ? "bg-blue-50 text-blue-900 border border-blue-200" :
-              status.type === "offline" ? "bg-amber-50 text-amber-900 border border-amber-200" :
-              "bg-rose-50 text-rose-900 border border-rose-200"
-            }`}>
-              {status.type === "success" && <Check className="h-5 w-5 shrink-0 text-blue-600" />}
-              {status.type === "offline" && <RefreshCw className="h-5 w-5 shrink-0 text-amber-600 animate-spin" />}
-              <span>{status.message}</span>
+          {erreur && (
+            <div className="p-4 rounded-2xl mb-6 text-sm font-bold flex items-start gap-2.5 bg-rose-50 text-rose-900 border border-rose-200">
+              <AlertCircle className="h-5 w-5 shrink-0 text-rose-600" />
+              <span>{erreur}</span>
             </div>
           )}
 
           <form onSubmit={validerFormulaire} className="space-y-6">
-            {/* Saisie Nom */}
             <div>
               <label className="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">
-                Prénom & Nom complet
+                Prénom &amp; Nom complet
               </label>
               <input
                 type="text"
@@ -196,7 +174,6 @@ export default function Participer() {
               />
             </div>
 
-            {/* Saisie Téléphone */}
             <div>
               <label className="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">
                 Numéro de téléphone
@@ -211,7 +188,6 @@ export default function Participer() {
               />
             </div>
 
-            {/* Choix du Quartier */}
             <div>
               <label className="block text-xs font-black text-slate-500 uppercase tracking-wider mb-2">
                 Sélectionne ton quartier de Yoff
@@ -237,7 +213,6 @@ export default function Participer() {
               </div>
             </div>
 
-            {/* Gros bouton de validation */}
             <button
               type="submit"
               disabled={loading}
