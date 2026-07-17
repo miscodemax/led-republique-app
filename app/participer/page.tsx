@@ -157,7 +157,7 @@ export default function Participer() {
                 placeholder="Ex: Amadou Diop"
                 value={nom}
                 onChange={(e) => setNom(e.target.value)}
-                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-base"
+                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-blue-700"
               />
             </div>
 
@@ -171,7 +171,7 @@ export default function Participer() {
                 placeholder="Ex: 77 123 45 67"
                 value={tel}
                 onChange={(e) => setTel(e.target.value)}
-                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-base"
+                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-blue-700"
               />
             </div>
 
@@ -188,7 +188,7 @@ export default function Participer() {
                 max={100}
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
-                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-base"
+                className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-blue-600 text-blue-700"
               />
             </div>
 
