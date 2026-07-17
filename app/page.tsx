@@ -15,6 +15,10 @@ import {
   Play,
   X,
 } from "lucide-react";
+import AffichesCarousel from "./components/Affichescarousel";
+import TerrainCarousel from "./components/Terraincarousel";
+import LeaderGallery from "./components/Leadergallery";
+import AssembleeVideo from "./components/Assembleevideo";
 
 const PILIERS = [
   { icon: Smartphone, title: "Le Numérique", desc: "Moderniser l'administration locale et faciliter l'accès aux services publics de Yoff." },
@@ -26,7 +30,6 @@ const PILIERS = [
   { icon: ShieldCheck, title: "Le Sport & Culture", desc: "Rénovation des infrastructures sportives et appui direct aux ASC de Yoff." },
 ];
 
-// Affiches & évènements — carrousel type "posters de campagne"
 const AFFICHES = [
   {
     src: "/images/affiche-elmansur.jpg",
@@ -48,11 +51,11 @@ const AFFICHES = [
   },
 ];
 
-// Moments de terrain — carrousel vertical type "TikTok"
+// Uniquement des vidéos verticales (9:16) ici — reunion-led.mp4 est en 16:9,
+// elle a sa propre section plus bas (AssembleeVideo)
 const MOMENTS_TERRAIN = [
   { src: "/videos/reunion-26.mp4", caption: "Réunion préparatoire du 26 Juillet" },
   { src: "/videos/comite.mp4", caption: "Réunion du comité LED République" },
-  { src: "/videos/reunion-led.mp4", caption: "Assemblée LED République" },
   { src: "/videos/yoff-digital-show.mp4", caption: "Yoff Digital Show" },
   { src: "/videos/education.mp4", caption: "Action éducation" },
   { src: "/videos/education-mansur.mp4", caption: "El Mansour Dia — Éducation" },
@@ -60,12 +63,11 @@ const MOMENTS_TERRAIN = [
   { src: "/videos/weekend-sport.mp4", caption: "Week-end sportif à Yoff" },
 ];
 
-// Galerie du leader — carrousel avec légendes
 const GALERIE_LEADER = [
-  { src: "/img/photo-bonne-qualite-elmansur.jpg", title: "El Mansour Dia", caption: "Sur le terrain, à l'écoute des Yoffois" },
-  { src: "/img/photo-officiel-mansur-basse-qualite.jpg", title: "Portrait Officiel", caption: "Leader du mouvement LED République" },
-  { src: "/img/photo-el-mansur-qualite-moyenne.jpg", title: "Terrain", caption: "Réunion avec les leaders de quartier" },
-  { src: "/img/IMG-20260706-WA0005.jpg", title: "Engagement", caption: "Toujours proche des citoyens de Yoff" },
+  { src: "/images/photo-bonne-qualite-elmansur.jpg", title: "El Mansour Dia", caption: "Sur le terrain, à l'écoute des Yoffois" },
+  { src: "/images/photo-officiel-mansur-basse-qualite.jpg", title: "Portrait Officiel", caption: "Leader du mouvement LED République" },
+  { src: "/images/photo-el-mansur-qualite-moyenne.jpg", title: "Terrain", caption: "Réunion avec les leaders de quartier" },
+  { src: "/images/IMG-20260706-WA0005.jpg", title: "Engagement", caption: "Toujours proche des citoyens de Yoff" },
 ];
 
 function MerciBanner() {
@@ -118,7 +120,7 @@ export default function Home() {
     <main className="min-h-screen selection:bg-blue-200 selection:text-blue-900">
       <MerciBanner />
 
-      {/* 1. SECTION HERO — visuel en arrière-plan */}
+      {/* 1. SECTION HERO */}
       <section className="relative overflow-hidden py-24 px-4 sm:py-36">
         <div className="absolute inset-0">
           <Image
@@ -183,79 +185,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 2. AFFICHES & MÉDIAS — carrousel de posters */}
+      {/* 2. AFFICHES & MÉDIAS */}
       <section className="py-16 px-4 bg-white">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-3xl font-bold text-slate-900 mb-10 text-center tracking-tight">Nos prochains grands rendez-vous</h2>
-          <div className="flex gap-5 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory scrollbar-hide sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-3">
-            {AFFICHES.map((a, idx) => (
-              <div
-                key={idx}
-                className="group relative shrink-0 snap-center w-[78vw] sm:w-auto aspect-[4/5] overflow-hidden rounded-3xl shadow-lg shadow-slate-200/50 transition-all hover:-translate-y-1 hover:shadow-xl"
-              >
-                <Image
-                  src={a.src}
-                  alt={a.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-6">
-                  <span className="inline-block text-[10px] font-black text-blue-300 uppercase tracking-wider mb-2">{a.tag}</span>
-                  <h3 className="text-xl font-bold text-white leading-tight">{a.title}</h3>
-                  <p className="text-sm text-slate-200 mt-2 leading-relaxed">{a.desc}</p>
-                </div>
-              </div>
-            ))}
-
-            {/* Carte vidéo message */}
-            <div className="relative shrink-0 snap-center w-[78vw] sm:w-auto flex aspect-[4/5] flex-col justify-between overflow-hidden rounded-3xl bg-slate-900 p-6 text-white shadow-lg">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-slate-900 opacity-90" />
-              <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-white/20 backdrop-blur-md cursor-not-allowed">
-                <Play className="h-6 w-6 fill-white text-white translate-x-0.5" />
-              </div>
-              <div className="relative z-10">
-                <span className="inline-block rounded-full bg-blue-500/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-blue-200 mb-3">Bientôt Disponible</span>
-                <h3 className="text-xl font-bold leading-tight">Message aux citoyens</h3>
-                <p className="text-sm text-slate-300 mt-2">Une vidéo exclusive de présentation du projet de société pour Yoff.</p>
-              </div>
-            </div>
-          </div>
+          <AffichesCarousel affiches={AFFICHES} />
         </div>
       </section>
 
-      {/* 3. MOMENTS DE TERRAIN — carrousel vertical type "TikTok" */}
+      {/* 3. MOMENTS DE TERRAIN */}
       <section className="py-16 px-4 bg-slate-50 border-y border-slate-100">
         <div className="mx-auto max-w-5xl">
           <div className="mb-6">
             <span className="text-xs font-black text-blue-600 uppercase tracking-widest">Sur le terrain</span>
             <h2 className="text-3xl font-bold text-slate-900 mt-1 tracking-tight">La vie du mouvement, en direct</h2>
           </div>
-          <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory scrollbar-hide">
-            {MOMENTS_TERRAIN.map((m, idx) => (
-              <div
-                key={idx}
-                className="relative shrink-0 snap-center w-[220px] aspect-[9/16] overflow-hidden rounded-3xl bg-slate-900 shadow-lg"
-              >
-                <video
-                  src={m.src}
-                  className="h-full w-full object-cover"
-                  muted
-                  loop
-                  playsInline
-                  autoPlay
-                  preload="none"
-                />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                  <p className="text-xs font-bold text-white leading-snug">{m.caption}</p>
-                </div>
-              </div>
-            ))}
-            <div className="shrink-0 snap-center w-[220px] aspect-[9/16] rounded-3xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-center p-4">
-              <span className="text-3xl mb-2">📸</span>
-              <p className="text-xs font-bold text-slate-500">D'autres moments arrivent bientôt</p>
-            </div>
-          </div>
+          <TerrainCarousel moments={MOMENTS_TERRAIN} />
         </div>
       </section>
 
@@ -292,31 +237,18 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Galerie du leader — carrousel avec légendes */}
         <div className="mx-auto max-w-5xl mt-14">
           <h3 className="text-sm font-black text-slate-500 uppercase tracking-widest mb-4">En images</h3>
-          <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory scrollbar-hide">
-            {GALERIE_LEADER.map((photo, idx) => (
-              <div
-                key={idx}
-                className="group relative shrink-0 snap-center w-[240px] aspect-[3/4] overflow-hidden rounded-2xl bg-slate-100 shadow-sm"
-              >
-                <Image
-                  src={photo.src}
-                  alt={photo.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-4">
-                  <p className="text-[10px] font-black text-blue-300 uppercase tracking-wider">{photo.title}</p>
-                  <p className="text-sm font-bold text-white mt-0.5 leading-snug">{photo.caption}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <LeaderGallery photos={GALERIE_LEADER} />
         </div>
       </section>
+
+      {/* 4bis. VIDÉO DE LA DERNIÈRE ASSEMBLÉE — 16:9, clic pour lire */}
+      <AssembleeVideo
+        src="/videos/reunion-led.mp4"
+        title="Notre dernière assemblée"
+        description="Retour sur l'assemblée LED République — clique pour lancer la vidéo."
+      />
 
       {/* 5. LES 7 PILIERS */}
       <section className="py-24 px-4 bg-slate-50">

@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-
+import { Youtube } from "lucide-react";
 
 // Remplace les "#" par tes vrais liens YouTube / TikTok quand tu les as
 const RESEAUX = [
@@ -15,6 +16,7 @@ function TikTokIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
 function YoutubeIcon({ className }: { className?: string }) {
   return (
     <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
@@ -29,8 +31,8 @@ export default function Footer() {
     <footer className="border-t border-slate-200 bg-white py-12 text-center text-sm text-slate-500">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <div className="mb-4 flex justify-center">
-          <div className="h-8 w-8 rounded-lg bg-slate-100 flex items-center justify-center font-bold text-slate-400">
-            LR
+          <div className="relative h-8 w-8 rounded-lg overflow-hidden">
+            <Image src="/icon-192.png" alt="LED République" fill className="object-cover" />
           </div>
         </div>
 

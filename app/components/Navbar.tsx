@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
@@ -19,8 +20,8 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-sm">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6 gap-2">
         <Link href="/" onClick={fermer} className="flex items-center gap-2 sm:gap-3 group shrink-0">
-          <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-blue-600 flex items-center justify-center font-black text-white shadow-md shadow-blue-500/20 transition-transform group-hover:scale-105">
-            LR
+          <div className="relative h-9 w-9 sm:h-10 sm:w-10 rounded-xl overflow-hidden shadow-md shadow-blue-500/20 transition-transform group-hover:scale-105">
+            <Image src="/icon-192.png" alt="LED République" fill className="object-cover" />
           </div>
           <span className="text-base sm:text-xl font-black tracking-tight text-slate-900 whitespace-nowrap">
             LED <span className="text-blue-600">République</span>
@@ -65,7 +66,7 @@ export default function Navbar() {
 
       {/* Panneau mobile plein écran */}
       {ouvert && (
-        <div className="md:hidden fixed inset-x-0 top-16 bottom-0 z-40 bg-blue-900 opacity-50 flex flex-col">
+        <div className="md:hidden fixed inset-x-0 top-16 bottom-0 z-40 bg-white flex flex-col">
           <nav className="flex flex-col divide-y divide-slate-100 px-4">
             {LIENS.map((l) => (
               <Link

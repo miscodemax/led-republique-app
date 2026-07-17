@@ -1,4 +1,4 @@
-const CACHE_NAME = "led-republique-v1";
+const CACHE_NAME = "led-republique-v2";
 const APP_SHELL = ["/", "/participer", "/manifest.json"];
 
 self.addEventListener("install", (event) => {
@@ -17,11 +17,21 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Stratégie "network first, fallback cache" pour rester à jour en ligne
-// et fonctionner quand même hors connexion.
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
+  const url = new URL(event.request.url);
+
+  // Vidéos et images : jamais mises en cache par le service worker.
+  // Elles sont trop lourdes — les mettre en cache saturait le stockage
+  // et ralentissait chaque chargement de page. Le navigateur gère déjà
+  // leur mise en cache HTTP native, plus efficace pour ce type de fichier.
+  if (url.pathname.startsWith("/videos/") || url.pathname.startsWith("/images/")) {
+    event.respondWith(fetch(event.request).catch(() => new Response(null, { status: 204 })));
+    return;
+  }
+
+  // Reste du site (pages, JS, CSS) : network first, fallback cache = hors-ligne OK.
   event.respondWith(
     fetch(event.request)
       .then((response) => {
