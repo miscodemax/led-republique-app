@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Youtube } from "lucide-react";
+
 
 // Remplace les "#" par tes vrais liens YouTube / TikTok quand tu les as
 const RESEAUX = [
