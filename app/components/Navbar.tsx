@@ -7,7 +7,7 @@ import { Menu, X } from "lucide-react";
 
 const LIENS = [
   { href: "/", label: "Accueil" },
-  { href: "/#activites", label: "Vision" },
+  { href: "/datas", label: "Vision" },
   { href: "/#membres", label: "Piliers" },
 ];
 
