@@ -128,7 +128,7 @@ export default function Participer() {
         </Link>
 
         <div className="relative aspect-[16/9] w-full overflow-hidden rounded-t-3xl border border-b-0 border-slate-200 bg-slate-100 shadow-sm">
-          <Image src="/img/IMG-20260715-WA0050.jpg" alt="Événement du 26 Juillet" fill className="object-cover" />
+          <Image src="/images/IMG-20260715-WA0050.jpg" alt="Événement du 26 Juillet" fill className="object-cover" />
         </div>
 
         <div className="bg-white rounded-b-3xl border border-t-0 border-slate-200 shadow-md p-6 sm:p-8">

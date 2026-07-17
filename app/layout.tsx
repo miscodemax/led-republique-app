@@ -16,6 +16,10 @@ export const metadata: Metadata = {
   title: "LED République | Le Renouveau de Yoff",
   description: "Site officiel du mouvement citoyen pour le progrès, l'autonomisation et l'engagement républicain à Yoff, porté par El Mansour Dia.",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/icon-192.png",
+    apple: "/icon-192.png",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
