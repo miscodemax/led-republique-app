@@ -19,7 +19,7 @@ export default function LeaderGallery({ photos }: { photos: Photo[] }) {
       freeMode={{ enabled: true, momentum: true }}
       slidesPerView="auto"
       spaceBetween={16}
-      className="!overflow-visible !px-4 !-mx-4"
+      className="!px-4 !-mx-4"
     >
       {photos.map((photo, idx) => (
         <SwiperSlide key={idx} style={{ width: 240 }}>

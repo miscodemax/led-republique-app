@@ -32,19 +32,19 @@ const PILIERS = [
 
 const AFFICHES = [
   {
-    src: "/images/affiche-elmansur.jpg",
+    src: "/img/affiche-elmansur.jpg",
     tag: "Affiche Officielle",
     title: "El Mansour Dia",
     desc: "L'affiche officielle du mouvement LED République.",
   },
   {
-    src: "/images/IMG-20260715-WA0050.jpg",
+    src: "/img/IMG-20260715-WA0050.jpg",
     tag: "Événement Phare",
     title: "Lancement Officiel",
     desc: "Dimanche 26 Juillet 2026 — réservez cette date pour marquer l'histoire de Yoff.",
   },
   {
-    src: "/images/IMG-20260714-WA0060.jpg",
+    src: "/img/IMG-20260714-WA0060.jpg",
     tag: "Préparatifs",
     title: "Assemblée de Quartier",
     desc: "Près du Terrain de Basket BCEAO, restaurant Baja Beach à Yoff.",
@@ -64,10 +64,10 @@ const MOMENTS_TERRAIN = [
 ];
 
 const GALERIE_LEADER = [
-  { src: "/images/photo-bonne-qualite-elmansur.jpg", title: "El Mansour Dia", caption: "Sur le terrain, à l'écoute des Yoffois" },
-  { src: "/images/photo-officiel-mansur-basse-qualite.jpg", title: "Portrait Officiel", caption: "Leader du mouvement LED République" },
-  { src: "/images/photo-el-mansur-qualite-moyenne.jpg", title: "Terrain", caption: "Réunion avec les leaders de quartier" },
-  { src: "/images/IMG-20260706-WA0005.jpg", title: "Engagement", caption: "Toujours proche des citoyens de Yoff" },
+  { src: "/img/photo-bonne-qualite-elmansur.jpg", title: "El Mansour Dia", caption: "Sur le terrain, à l'écoute des Yoffois" },
+  { src: "/img/photo-officiel-mansur-basse-qualite.jpg", title: "Portrait Officiel", caption: "Leader du mouvement LED République" },
+  { src: "/img/photo-el-mansur-qualite-moyenne.jpg", title: "Terrain", caption: "Réunion avec les leaders de quartier" },
+  { src: "/img/IMG-20260706-WA0005.jpg", title: "Engagement", caption: "Toujours proche des citoyens de Yoff" },
 ];
 
 function MerciBanner() {
@@ -124,7 +124,7 @@ export default function Home() {
       <section className="relative overflow-hidden py-24 px-4 sm:py-36">
         <div className="absolute inset-0">
           <Image
-            src="/images/photo-bonne-qualite-identite-elmansur.jpg"
+            src="/img/photo-bonne-qualite-identite-elmansur.jpg"
             alt="El Mansour Dia"
             fill
             priority
@@ -209,7 +209,7 @@ export default function Home() {
         <div className="mx-auto max-w-5xl grid gap-12 md:grid-cols-12 items-center">
           <div className="md:col-span-5 relative aspect-[4/5] w-full overflow-hidden rounded-3xl border-8 border-white shadow-2xl bg-slate-200 rotate-1 hover:rotate-0 transition-transform duration-300">
             <Image
-              src="/images/photo-bonne-qualite-elmansur.jpg"
+              src="/img/photo-bonne-qualite-elmansur.jpg"
               alt="Portrait El Mansour Dia"
               fill
               className="object-cover"

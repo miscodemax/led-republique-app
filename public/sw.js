@@ -26,7 +26,7 @@ self.addEventListener("fetch", (event) => {
   // Elles sont trop lourdes — les mettre en cache saturait le stockage
   // et ralentissait chaque chargement de page. Le navigateur gère déjà
   // leur mise en cache HTTP native, plus efficace pour ce type de fichier.
-  if (url.pathname.startsWith("/videos/") || url.pathname.startsWith("/images/")) {
+  if (url.pathname.startsWith("/videos/") || url.pathname.startsWith("/img/")) {
     event.respondWith(fetch(event.request).catch(() => new Response(null, { status: 204 })));
     return;
   }
